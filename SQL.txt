@@ -1,0 +1,141 @@
+use hr_analytics;
+
+select * from hr_1;
+select * from hr_2;
+
+select * from hr_1
+join hr_2 
+on hr_1.EmployeeNumber=hr_2.Employee_ID
+order by hr_1.EmployeeNumber;
+
+-----------------------------------------------------------------------------------------
+# Average Attrition rate for all Departments
+
+
+with details as (
+select Department,
+	   count(EmployeeNumber) as total_emp_count,
+       sum( case
+				when Attrition = "Yes" then 1 else 0
+			end
+		 ) as num_of_attrition
+from hr_1 group by Department
+)
+select Department,concat(round((num_of_attrition/total_emp_count)*100,2)," %") as Attrition_rate from details;
+
+# Data didn't need cleaning; attrtion column was in HR_! itself, so no joins required. 
+# Used a CTE (common table expression) to get table with dept, tot emp count and attrition count.
+# calculations were done in the outer query.
+
+-----------------------------------------------------------------------------------------
+# Average Hourly rate of Male Research Scientist
+
+select * from hr_1;
+
+# Answer
+select JobRole, round(avg(HourlyRate),2) as avg_hourly_rate from hr_1 where JobRole = "Research Scientist" and Gender = "Male" group by JobRole;
+
+-----------------------------------------------------------------------------------------
+# Attrition rate Vs Monthly income stats
+
+
+# first put each person into a income range
+# using that as CTE, find the number of people in each income range by grouping, count etc
+# in the same above code, find the number of people who have left the comp using sum and case
+# try to put them all together to get the required result.
+
+# ANSWER
+WITH ranged_income AS (
+    SELECT 
+        hr_1.EmployeeNumber,
+        Attrition, 
+        MonthlyIncome,
+        CASE 
+            WHEN MonthlyIncome >= 0 AND MonthlyIncome < 10000 THEN '0-10K'
+            WHEN MonthlyIncome >= 10000 AND MonthlyIncome < 20000 THEN '10K-20K'
+            WHEN MonthlyIncome >= 20000 AND MonthlyIncome < 30000 THEN '20K-30K'
+            WHEN MonthlyIncome >= 30000 AND MonthlyIncome < 40000 THEN '30K-40K'
+            WHEN MonthlyIncome >= 40000 AND MonthlyIncome < 50000 THEN '40K-50K'
+            ELSE '> 50K'
+        END AS income_range
+    FROM hr_1
+    JOIN hr_2 
+    ON hr_1.EmployeeNumber = hr_2.Employee_ID
+    ORDER BY hr_1.EmployeeNumber
+)
+SELECT 
+    income_range, 
+    COUNT(EmployeeNumber) AS num_of_employees, 
+    SUM(CASE WHEN Attrition = 'Yes' THEN 1 ELSE 0 END) AS attrition_numbers,
+    CONCAT(ROUND((SUM(CASE WHEN Attrition = 'Yes' THEN 1 ELSE 0 END) / COUNT(EmployeeNumber)) * 100, 2), ' %') AS attrition_rate
+FROM ranged_income 
+GROUP BY income_range
+ORDER BY 
+    FIELD(income_range, '0-10K', '10K-20K', '20K-30K', '30K-40K', '40K-50K', '> 50K');
+
+
+# The FIELD function in MySQL is used to return the position of a value within a list of values. This can be particularly useful for custom ordering in queries.
+# To see what the result would look like, copy and paste the whole FIELD line in the select statement of the outer query.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+# Average working years for each Department
+
+# Answer
+select Department, concat(round(avg(TotalWorkingYears),2)," %") from hr_1
+join hr_2 
+on hr_1.EmployeeNumber=hr_2.Employee_ID
+group by Department;
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+# Job Role Vs Work life balance
+
+#Answer
+select JobRole, 
+    AVG(WorkLifeBalance) AS Average_WorkLifeBalance from hr_1
+join hr_2 
+on hr_1.EmployeeNumber=hr_2.Employee_ID
+group by JobRole;
+
+#THIS ONE SHOWS COUNT		
+select  JobRole, 
+    WorkLifeBalance, 
+    COUNT(WorkLifeBalance) AS Count from hr_1
+join hr_2 
+on hr_1.EmployeeNumber=hr_2.Employee_ID
+group by JobRole,WorkLifeBalance
+order by JobRole,WorkLifeBalance;
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+# Attrition rate Vs Year since last promotion relation
+
+WITH ranged_income AS (
+    SELECT 
+        hr_1.EmployeeNumber,
+        Attrition, 
+        YearsSinceLastPromotion,
+        CASE 
+            WHEN YearsSinceLastPromotion >= 0 AND YearsSinceLastPromotion < 5 THEN '0-5'
+            WHEN YearsSinceLastPromotion >= 5 AND YearsSinceLastPromotion < 10 THEN '5-10'
+            WHEN YearsSinceLastPromotion >= 10 AND YearsSinceLastPromotion < 15 THEN '10-15'
+            WHEN YearsSinceLastPromotion >= 15 AND YearsSinceLastPromotion < 20 THEN '15-20'
+            WHEN YearsSinceLastPromotion >= 20 AND YearsSinceLastPromotion < 25 THEN '20-25'
+            WHEN YearsSinceLastPromotion >= 25 AND YearsSinceLastPromotion < 30 THEN '25-30'
+            WHEN YearsSinceLastPromotion >= 30 AND YearsSinceLastPromotion < 35 THEN '30-35'
+            ELSE '> 35'
+        END AS years_since_promotion_range
+    FROM hr_1
+    JOIN hr_2 
+    ON hr_1.EmployeeNumber = hr_2.Employee_ID
+    ORDER BY hr_1.EmployeeNumber
+)
+SELECT 
+    years_since_promotion_range,
+    count(*) as total_employees,
+    sum( case when Attrition = "Yes" then 1 else 0 end ) as attrition_num,
+    concat(round((sum( case when Attrition = "Yes" then 1 else 0 end )/count(*))*100,2)," %") as attrition_rate
+FROM ranged_income 
+GROUP BY years_since_promotion_range
+order by field(years_since_promotion_range,'0-5','5-10','10-15','15-20','20-25','25-30','30-35','> 35');
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
