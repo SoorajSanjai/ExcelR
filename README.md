@@ -19,21 +19,36 @@ The project involved a comprehensive analysis of loan data to identify patterns 
 
 **Metric 1: Year-wise Loan Amount Statistics**
 The data shows a steady increase in both the number of loans issued and the total loan amount from 2007 to 2011, with debt consolidation loans dominating. This suggests that many borrowers are using these loans to manage existing debts. Loans for credit card refinancing and home improvement follow in terms of total loan amount. Interest rates vary by loan category, and categories with smaller total loan amounts generally have higher average interest rates.
+![image](https://github.com/user-attachments/assets/342b9ebc-d3db-41a3-afdf-6c774fc80302)
+![image](https://github.com/user-attachments/assets/1aa2cbdd-e7ff-48e8-93a9-02b76c736cdd)
+
 
 **Metric 2: Grade and Sub-Grade Wise Revolving Balance**
 Most loans are issued to borrowers in grades B, A, and C. Higher loan grades (A and B) are associated with lower revolving balances, indicating better creditworthiness and lower risk. In contrast, lower grades (D to G) have significantly higher balances, reflecting higher risk profiles. This highlights the relationship between creditworthiness and outstanding debt, emphasizing the focus on lower-risk lending.
+![image](https://github.com/user-attachments/assets/c2f4e289-4f30-44b4-aee4-cbffcb662f5a)
+
 
 **Metric 3: Verification Status vs. Total Payment**
 Verified borrowers, who have the largest total payment, are considered lower risk due to confirmed income and details, leading to better repayment behaviour. Not verified and source verified borrowers still repay substantial amounts but exhibit higher risk profiles. This data underscores the importance of thorough verification processes for improved loan performance and risk management.
+![image](https://github.com/user-attachments/assets/2f9e6f2d-8fc1-4fec-87d9-14176423e434)
+
 
 **Metric 4: State-Wise Loan Status**
 California has the highest total loan amount and the highest number of "Charged Off" loans, indicating a higher incidence of defaults. The chart also shows significant lending activity in states like Texas, New York, and Florida, suggesting geographic diversification that spreads risk. Most loans are in the "Fully Paid" and "Current" categories, indicating good overall loan performance. However, an end-of-year surge in lending followed by increased defaults suggests a higher risk for loans taken out during this period.
+![image](https://github.com/user-attachments/assets/363f2e97-a470-4cb6-a28c-575210a76b27)
+![image](https://github.com/user-attachments/assets/41dbfbe6-5c84-4582-9308-652b5a4ab288)
+
+
 
 **Metric 5: Home Ownership vs. Loan Repayment Status**
 Homeowners tend to have a slightly higher proportion of timely loan repayments compared to renters and mortgage holders. Most borrowers, regardless of housing status, repay their loans on time. This trend suggests that ownership stability may influence borrower reliability, and lenders might need to adjust their strategies to support renters and mortgage holders better.
+![image](https://github.com/user-attachments/assets/71f68dce-c3ea-4dfc-a312-fcad17bc689c)
+
 
 **Metric 6: Average Annual Income vs. Loan Grades**
 Borrowers with lower loan grades (E, F, G) have higher average annual incomes compared to those with higher grades (A, B, C). This counterintuitive trend may be due to higher debt levels, or riskier financial behaviours among high-income individuals. It suggests that effective debt management and responsible financial behaviour are crucial for determining creditworthiness, beyond just income levels.
+![image](https://github.com/user-attachments/assets/92bfbc4b-c459-4a7f-897c-3975d09f3e44)
+
 
 
 
